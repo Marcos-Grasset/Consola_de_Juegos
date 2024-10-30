@@ -42,18 +42,17 @@ lives = 3
 game_over = False
 
 # Inicializar la música de fondo
-background_music_sound = pygame.mixer.Sound('music.wav')
+background_music_sound = pygame.mixer.Sound('Brick Breaker/music.wav')
 background_music_sound.set_volume(0.5)  # Ajusta el volumen (0.0 a 1.0)
 background_music_sound.play(-1)  # Reproduce en bucle
 
 # Cargar sonidos
-bounce_sound = pygame.mixer.Sound('bounce.wav')
-break_sound = pygame.mixer.Sound('break.wav')
-lose_life_sound = pygame.mixer.Sound('lose_life.wav')
-level_up_sound = pygame.mixer.Sound('level_up.wav')
-game_over_sound = pygame.mixer.Sound('game_over.wav')
+bounce_sound = pygame.mixer.Sound('Brick Breaker/bounce.wav')
+break_sound = pygame.mixer.Sound('Brick Breaker/break.wav')
+lose_life_sound = pygame.mixer.Sound('Brick Breaker/lose_life.wav')
+level_up_sound = pygame.mixer.Sound('Brick Breaker/level_up.wav')
+game_over_sound = pygame.mixer.Sound('Brick Breaker/game_over.wav')
 game_over_sound.set_volume(1.0)  # Ajusta el volumen (0.0 a 1.0)
-
 
 ball = pygame.Rect(WIDTH // 2 - BALL_SIZE // 2, HEIGHT // 2, BALL_SIZE, BALL_SIZE)
 paddle = pygame.Rect(WIDTH // 2 - PADDLE_WIDTH // 2, HEIGHT - 50, PADDLE_WIDTH, PADDLE_HEIGHT)
@@ -129,11 +128,10 @@ def draw_message():
 
     # Texto de instrucciones
     font_small = pygame.font.Font(pygame.font.get_default_font(), 30)
-    instructions = ["R Restart", "M Menu", "E Exit"]
+    instructions = ["'R' Restart", "'M' Menu", "'E' Exit"]
     for i, line in enumerate(instructions):
         text_line = font_small.render(line, True, NEON_YELLOW)
         screen.blit(text_line, text_line.get_rect(center=(WIDTH // 2, HEIGHT // 2 + i * 40)))
-
 
 def draw():
     draw_background()
@@ -209,69 +207,68 @@ def game_over_screen():
         draw_background()
         for bubble in bubbles:
             bubble.move()
-            bubble.draw()  # Dibuja las burbujas en la pantalla de Game Over
+            bubble.draw()
 
         draw_message()
         pygame.display.flip()
 
-running = True
-while running:
+# Bucle principal del juego
+clock = pygame.time.Clock()
+while True:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
-            running = False
+            pygame.quit()
+            exit()
+
+    keys = pygame.key.get_pressed()
+    if keys[pygame.K_LEFT] and paddle.left > 0:
+        paddle.x -= paddle_speed
+    if keys[pygame.K_RIGHT] and paddle.right < WIDTH:
+        paddle.x += paddle_speed
 
     if not game_over:
-        keys = pygame.key.get_pressed()
-        if keys[pygame.K_LEFT] and paddle.x > 0:
-            paddle.x -= paddle_speed
-        if keys[pygame.K_RIGHT] and paddle.x < WIDTH - PADDLE_WIDTH:
-            paddle.x += paddle_speed
-
         ball.x += ball_speed_x
         ball.y += ball_speed_y
 
-        if ball.colliderect(paddle):
-            ball_speed_y *= -1
-            ball.x += ball_speed_x
-            ball_speed_x = (ball.x - paddle.x) / (PADDLE_WIDTH / 2) * 5
-            bounce_sound.play()
-
-        for block in blocks[:]:
-            if ball.colliderect(block):
-                blocks.remove(block)
-                ball_speed_y *= -1
-                break_sound.play()
-                score += 1
-
-        if ball.x <= 0 or ball.x >= WIDTH:
+        if ball.left <= 0 or ball.right >= WIDTH:
             ball_speed_x *= -1
             bounce_sound.play()
 
-        if ball.y <= 0:
+        if ball.top <= 0:
             ball_speed_y *= -1
             bounce_sound.play()
 
-        if ball.y >= HEIGHT:
-            lose_life_sound.play()
+        if ball.colliderect(paddle):
+            ball_speed_y *= -1
+            ball.y = paddle.top - BALL_SIZE
+            bounce_sound.play()
+
+        if ball.bottom >= HEIGHT:
             lives -= 1
-            if lives > 0:
-                ball.x = WIDTH // 2 - BALL_SIZE // 2
-                ball.y = HEIGHT // 2
-                paddle.x = WIDTH // 2 - PADDLE_WIDTH // 2
-            else:
+            lose_life_sound.play()
+            if lives <= 0:
                 game_over = True
                 game_over_sound.play()
+            else:
+                ball.x = WIDTH // 2 - BALL_SIZE // 2
+                ball.y = HEIGHT // 2
 
-        if not blocks:
-            level += 1
-            ball_speed_x *= 1.1
-            ball_speed_y *= 1.1
-            blocks = create_blocks(5, 10)
-            level_up_sound.play()
+        for block in blocks:
+            if ball.colliderect(block):
+                ball_speed_y *= -1
+                score += 10
+                break_sound.play()
+                blocks.remove(block)
+                if not blocks:  # Si no quedan bloques
+                    level += 1
+                    blocks = create_blocks(5 + level, 10 + level)  # Aumentar dificultad
+                    level_up_sound.play()
+                    ball_speed_x *= random.choice((-1, 1))
+                    ball_speed_y *= random.choice((-1, 1))
+                    break
 
-        draw()
-
-    else:
+    if game_over:
         game_over_screen()
-
-pygame.quit()
+    else:
+        draw()
+    clock.tick(100)
