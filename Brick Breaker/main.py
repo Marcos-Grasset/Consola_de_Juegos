@@ -200,7 +200,7 @@ def game_over_screen():
                 if event.key == pygame.K_r:
                     reset_game()
                 elif event.key == pygame.K_m:
-                    os.system('python "C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Arcade Console\\main.py"')
+                    os.system('python "..\Consola_de_Juegos\Arcade Console\main.py"')
                     pygame.quit()
                     exit()
                 elif event.key == pygame.K_e:

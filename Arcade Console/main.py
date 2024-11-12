@@ -227,13 +227,13 @@ while running:
 
                         # Ejecutamos el juego seleccionado
                         if selected_game == 0:
-                            os.system("python \"C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Brick Breaker\\main.py\"")
+                            os.system("python \"..\Consola_de_Juegos\Brick Breaker\main.py")
                         elif selected_game == 1:
-                            os.system("python \"C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Snake\\snake.py\"")
+                            os.system("python \"..\Consola_de_Juegos\Snake\snake.py\"")
                         elif selected_game == 2:
-                            os.system("python \"C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Bubbleshooter\\bubbleshooter.py\"")
+                            os.system("python \"..\Consola_de_Juegos\Bubbleshooter\main.py\"")
                         elif selected_game == 3:
-                            os.system("python \"C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Ping Pong\\main.py\"")
+                            os.system("python \"..\Consola_de_Juegos\Ping Pong\main.py\"")
                         running = False  # Termina la ejecución del menú
             pygame.display.flip()
 
