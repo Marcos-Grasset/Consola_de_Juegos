@@ -4,6 +4,10 @@ import math
 # Inicialización de Pygame
 pygame.init()
 
+# Configurar sonido de fondo en bucle
+pygame.mixer.music.load("Arcade console/menu.wav")  # Carga el archivo de sonido
+pygame.mixer.music.play(-1)  # Reproduce en bucle indefinidamente
+
 # Colores y dimensiones
 NEON_CYAN = (0, 255, 255)  # Cian
 NEON_VIOLET = (148, 0, 211)  # Violeta
@@ -28,19 +32,19 @@ main_menu = False
 angle = 0
 
 # Cargar la imagen del arcade y fondos
-arcade_image = pygame.image.load("ARCADE.png")
+arcade_image = pygame.image.load("Arcade console/ARCADE.png")
 arcade_image = pygame.transform.scale(arcade_image, (400, 200))
 
 # Cargar los fondos
-background_image = pygame.image.load("fondo.jpg")
+background_image = pygame.image.load("Arcade console/fondo.jpg")
 background_image = pygame.transform.scale(background_image, (WIDTH, HEIGHT))
-background_image1 = pygame.image.load("fondo1.jpg")  # Fondo para la pantalla de ingreso de nombre
+background_image1 = pygame.image.load("Arcade console/fondo1.jpg")  # Fondo para la pantalla de ingreso de nombre
 background_image1 = pygame.transform.scale(background_image1, (WIDTH, HEIGHT))
-background_image2 = pygame.image.load("fondo2.jpg")
+background_image2 = pygame.image.load("Arcade console/fondo2.jpg")
 background_image2 = pygame.transform.scale(background_image2, (WIDTH, HEIGHT))
 
 # Cargar la imagen para reemplazar "Comenzar!"
-start_button_image = pygame.image.load("start.png")
+start_button_image = pygame.image.load("Arcade console/start.png")
 start_button_image = pygame.transform.scale(start_button_image, (200, 100))  # Botón más grande
 
 # Variables para el efecto de bucle infinito
