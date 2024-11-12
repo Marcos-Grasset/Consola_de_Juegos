@@ -6,7 +6,7 @@ import random
 pygame.init()
 
 
-WIDTH, HEIGHT = 600, 800
+WIDTH, HEIGHT = 500, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Bubble Shooter")
 

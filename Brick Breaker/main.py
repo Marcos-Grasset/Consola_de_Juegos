@@ -200,7 +200,7 @@ def game_over_screen():
                 if event.key == pygame.K_r:
                     reset_game()
                 elif event.key == pygame.K_m:
-                    os.system('python "C:\\Users\\Usuario\\Documents\\GitHub\\Consola_de_Juegos\\Arcade Console\\main.py"')
+                    os.system('python "C:\\Users\\Alumno\Documents\\GitHub\\Consola_de_Juegos\\Arcade Console\\main.py"')
                     pygame.quit()
                     exit()
                 elif event.key == pygame.K_e:
@@ -275,4 +275,4 @@ while True:
         game_over_screen()
     else:
         draw()
-    clock.tick(100)
+    clock.tick(60)
