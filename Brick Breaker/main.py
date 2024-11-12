@@ -199,7 +199,7 @@ def game_over_screen():
                 if event.key == pygame.K_r:
                     reset_game()
                 elif event.key == pygame.K_m:
-                    print("Menu selected")  # Aquí puedes añadir código para ir al menú
+                    main_menu_screen()  # Ir al menú principal
                 elif event.key == pygame.K_e:
                     pygame.quit()
                     exit()
@@ -211,6 +211,7 @@ def game_over_screen():
 
         draw_message()
         pygame.display.flip()
+
 
 # Bucle principal del juego
 clock = pygame.time.Clock()
