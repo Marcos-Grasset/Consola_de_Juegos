@@ -6,7 +6,7 @@ import random
 pygame.init()
 
 
-WIDTH, HEIGHT = 500, 700
+WIDTH, HEIGHT = 530, 700
 screen = pygame.display.set_mode((WIDTH, HEIGHT))
 pygame.display.set_caption("Bubble Shooter")
 
@@ -39,8 +39,8 @@ font = pygame.font.Font(None, 30)
 shoot_sound = pygame.mixer.Sound("Bubbleshooter/sonidos/shoot.wav")
 collision_sound = pygame.mixer.Sound("Bubbleshooter/sonidos/bubble.wav")
 remove_sound = pygame.mixer.Sound("Bubbleshooter/sonidos/explosion.wav")
-
-
+pygame.mixer.music.load("Bubbleshooter/sonidos/music.wav")
+pygame.mixer.music.play(-1)
 background = pygame.image.load('Bubbleshooter/img/fondo1.jpg')
 background = pygame.transform.scale(background, (WIDTH, HEIGHT))
 
@@ -218,35 +218,34 @@ def create_grid(level):
                 current_row.append(bubble)
             grid.append(current_row)
 
-    elif level == 2:  
-        center_x, center_y = WIDTH // 2, HEIGHT // 4
-        radius_increment = BUBBLE_RADIUS * 1.4 
+    elif level == 2:  # Nivel circular mejorado con burbujas más cercanas
+        rect_width = 400  
+        rect_height = 200  
+        rows = 6  # Reducido el número de filas
+        cols = 8  # Reducido el número de columnas
+        bubble_diameter = BUBBLE_RADIUS * 2  
 
-      
-        for ring in range(1, 9): 
-            current_ring = []
-            radius = ring * radius_increment
-            bubble_count = int(2 * math.pi * radius / (BUBBLE_RADIUS * 2.5))  
-            angle_increment = 360 / bubble_count
+        center_x = WIDTH // 2
+        center_y = HEIGHT // 2
 
-            for i in range(bubble_count):
-                angle = math.radians(i * angle_increment)
-                x = center_x + radius * math.cos(angle)
-                y = center_y + radius * math.sin(angle)
+        offset_x = (rect_width - (cols * bubble_diameter)) // 2 + 20
+        offset_y = (rect_height - (rows * bubble_diameter)) // 2 - 150 
 
+        for row in range(rows):
+            for col in range(cols):
+                x = center_x - rect_width // 2 + col * bubble_diameter + offset_x
+                y = center_y - rect_height // 2 + row * bubble_diameter + offset_y
                 color = random.choice(COLORS)
                 bubble = Bubble(x, y, color)
-                current_ring.append(bubble)
-
-            grid.append(current_ring)
-
+                grid.append([bubble]) 
 
     elif level == 3: 
         rect_width = 400  
         rect_height = 200  
-        rows = 10  
-        cols = 15  
-        bubble_diameter = BUBBLE_RADIUS * 2  
+        rows = 13 
+        cols = 13  
+        bubble_diameter = BUBBLE_RADIUS * 2
+        
 
        
         center_x = WIDTH // 2
@@ -333,15 +332,14 @@ def show_final_message(score):
 
 def main():
     running = True
-    score = 0  
-    start_time = pygame.time.get_ticks() 
     game_duration = 60 * 1000 
 
     while running:
         mostrar_mensaje_bienvenida() 
         
         level = show_level_menu()  # Mostrar menú de selección de nivel
-        
+        start_time = pygame.time.get_ticks()  # Reinicia el temporizador cada vez que inicias un nive
+        score = 0
 
         grid = create_grid(level)
         current_bubble_color = random.choice(COLORS)
@@ -416,8 +414,8 @@ def main():
             pygame.display.flip()
             clock.tick(60)
 
-        show_final_message(score) #
-
+        show_final_message(score) 
+    pygame.mixer.music.stop()
     pygame.quit()
 
 
