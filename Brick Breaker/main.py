@@ -191,6 +191,9 @@ def reset_game():
 
 def game_over_screen():
     global game_over
+    # Detener la música de fondo al entrar a la pantalla de Game Over
+    background_music_sound.stop()
+    
     while game_over:
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
@@ -199,7 +202,11 @@ def game_over_screen():
             elif event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_r:
                     reset_game()
+                    # Reanudar la música al reiniciar el juego
+                    background_music_sound.play(-1)
                 elif event.key == pygame.K_m:
+                    # Detener todos los sonidos antes de regresar al menú
+                    pygame.mixer.stop()
                     os.system('python "..\Consola_de_Juegos\Arcade Console\main.py"')
                     pygame.quit()
                     exit()
